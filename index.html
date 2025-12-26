@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex Mercer | Strategic Data Analyst</title>
+    <meta name="description" content="Portfolio of a Data Analyst focused on strategic insights and business impact.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Custom Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // REPLACED Slate (Blue-Grey) with Zinc (Neutral Dark Grey/Black) for a sharper look
+                        slate: {
+                            800: '#27272a',
+                            850: '#202023', 
+                            900: '#18181b',
+                            950: '#09090b', 
+                        },
+                        blue: {
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                        },
+                        teal: {
+                            400: '#2dd4bf',
+                            500: '#14b8a6',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Utilities */
+        body {
+            background-color: #09090b; /* Zinc 950 - Deep Neutral Black */
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+        
+        .glass-panel {
+            background: rgba(24, 24, 27, 0.6); /* Zinc 900 based */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(59, 130, 246, 0.15); /* Slightly stronger border for contrast */
+        }
+
+        .glass-nav {
+            background: rgba(9, 9, 11, 0.85); /* Zinc 950 based */
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #f8fafc, #a1a1aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .text-gradient-blue {
+            background: linear-gradient(to right, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Chart Animations */
+        .bar-fill {
+            transition: height 1s ease-out;
+        }
+
+        /* Abstract Background Pattern - Subtle Grid */
+        .bg-grid-pattern {
+            background-image: linear-gradient(to right, #27272a 1px, transparent 1px),
+                              linear-gradient(to bottom, #27272a 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+        
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <span class="font-serif text-2xl font-bold tracking-tight text-white">AM<span class="text-blue-500">.</span></span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#about" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">About</a>
+                        <a href="#skills" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Expertise</a>
+                        <a href="#projects" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Case Studies</a>
+                        <a href="#experience" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Experience</a>
+                        <a href="#contact" class="px-5 py-2 text-sm font-medium text-slate-950 bg-white rounded-full hover:bg-slate-200 transition-colors">Get in Touch</a>
+                    </div>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-slate-300 hover:text-white p-2">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-slate-800 absolute w-full">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#about" class="block px-3 py-2 text-base font-medium text-slate-300 hover:text-white">About</a>
+                <a href="#skills" class="block px-3 py-2 text-base font-medium text-slate-300 hover:text-white">Expertise</a>
+                <a href="#projects" class="block px-3 py-2 text-base font-medium text-slate-300 hover:text-white">Case Studies</a>
+                <a href="#contact" class="block px-3 py-2 text-base font-medium text-slate-950 bg-white rounded mt-4 text-center">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute inset-0 z-0 opacity-20 bg-grid-pattern"></div>
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-900/20 rounded-full blur-3xl animate-pulse-slow"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-teal-900/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
+
+        <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
+            <div class="inline-flex items-center px-3 py-1 rounded-full border border-slate-700 bg-slate-900/80 mb-8 animate-fade-in-up">
+                <span class="w-2 h-2 rounded-full bg-teal-500 mr-2"></span>
+                <span class="text-xs font-medium text-slate-300 tracking-wide uppercase">Available for Consulting</span>
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-serif font-bold tracking-tight mb-6 leading-tight animate-fade-in-up" style="animation-delay: 0.1s;">
+                Turning Complex Data into <br>
+                <span class="text-gradient-blue">Strategic Decisions</span>
+            </h1>
+            
+            <p class="mt-6 text-xl text-slate-400 max-w-2xl mx-auto font-light leading-relaxed animate-fade-in-up" style="animation-delay: 0.2s;">
+                I bridge the gap between raw numbers and executive strategy. Specializing in predictive modeling, interactive dashboards, and actionable business intelligence.
+            </p>
+            
+            <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up" style="animation-delay: 0.3s;">
+                <a href="#projects" class="px-8 py-4 bg-white text-slate-950 rounded-full font-medium hover:bg-slate-200 transition-all transform hover:scale-105 shadow-lg shadow-white/10">
+                    View Case Studies
+                </a>
+                <button onclick="document.getElementById('contact').scrollIntoView()" class="px-8 py-4 border border-slate-700 text-slate-300 rounded-full font-medium hover:border-slate-500 hover:text-white transition-all backdrop-blur-sm">
+                    Download Resume
+                </button>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce opacity-50">
+            <i data-lucide="chevron-down" class="w-6 h-6 text-slate-400"></i>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-slate-950 relative">
+        <div class="max-w-6xl mx-auto px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <!-- Image/Graphic Area -->
+                <div class="relative reveal">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-teal-500/10 rounded-2xl transform rotate-3 blur-sm"></div>
+                    <div class="glass-panel rounded-2xl p-8 relative overflow-hidden aspect-[4/3] flex items-center justify-center border-slate-800">
+                         <!-- Abstract Visualization Graphic -->
+                         <div class="w-full h-full flex flex-col justify-center space-y-4">
+                            <div class="flex items-end justify-between h-32 space-x-2 px-4">
+                                <div class="w-1/6 bg-slate-800 h-[40%] rounded-t-md opacity-50"></div>
+                                <div class="w-1/6 bg-slate-700 h-[60%] rounded-t-md opacity-60"></div>
+                                <div class="w-1/6 bg-slate-600 h-[45%] rounded-t-md opacity-70"></div>
+                                <div class="w-1/6 bg-slate-500 h-[75%] rounded-t-md opacity-80"></div>
+                                <div class="w-1/6 bg-blue-500 h-[90%] rounded-t-md shadow-[0_0_15px_rgba(59,130,246,0.5)]"></div>
+                            </div>
+                            <div class="flex justify-between text-xs text-slate-500 font-mono px-4">
+                                <span>Q1</span><span>Q2</span><span>Q3</span><span>Q4</span><span>Proj</span>
+                            </div>
+                            <div class="mt-4 p-4 bg-slate-900 rounded-lg border border-slate-800">
+                                <div class="flex items-center space-x-3 mb-2">
+                                    <div class="w-2 h-2 rounded-full bg-teal-500"></div>
+                                    <span class="text-sm font-medium text-teal-400">+24% YoY Growth Identified</span>
+                                </div>
+                                <div class="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+                                    <div class="h-full bg-teal-500 w-[74%]"></div>
+                                </div>
+                            </div>
+                         </div>
+                    </div>
+                </div>
+
+                <!-- Text Content -->
+                <div class="reveal">
+                    <h2 class="text-3xl md:text-4xl font-serif font-bold mb-6 text-white">More than just charts. <br><span class="text-slate-400">I deliver clarity.</span></h2>
+                    <p class="text-lg text-slate-400 mb-6 leading-relaxed">
+                        Data without context is noise. My approach goes beyond extraction and visualization—I focus on the <span class="text-white font-medium">narrative within the numbers</span>.
+                    </p>
+                    <p class="text-lg text-slate-400 mb-8 leading-relaxed">
+                        With a background in statistical analysis and business strategy, I help organizations optimize operations, forecast trends, and unlock revenue streams. I don't just answer "what happened?" but "why it happened" and "what we should do next."
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="text-3xl font-bold text-white">5+</h3>
+                            <p class="text-sm text-slate-500 uppercase tracking-wider mt-1">Years Experience</p>
+                        </div>
+                        <div>
+                            <h3 class="text-3xl font-bold text-white">$2M+</h3>
+                            <p class="text-sm text-slate-500 uppercase tracking-wider mt-1">Revenue Impact</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-24 bg-slate-900 relative border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-white mb-4">Technical Expertise</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">A robust toolkit designed for end-to-end data pipelines, from raw ingestion to executive dashboarding.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Skill Card 1 -->
+                <div class="glass-panel p-8 rounded-xl hover:border-slate-600 transition-colors reveal">
+                    <div class="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center mb-6">
+                        <i data-lucide="database" class="w-6 h-6 text-blue-400"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-4">Data Warehousing & SQL</h3>
+                    <ul class="space-y-2 text-slate-400">
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-blue-500"></i> Advanced Querying</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-blue-500"></i> PostgreSQL / MySQL</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-blue-500"></i> BigQuery / Snowflake</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-blue-500"></i> ETL Pipeline Optimization</li>
+                    </ul>
+                </div>
+
+                <!-- Skill Card 2 -->
+                <div class="glass-panel p-8 rounded-xl hover:border-slate-600 transition-colors reveal">
+                    <div class="w-12 h-12 bg-teal-500/10 rounded-lg flex items-center justify-center mb-6">
+                        <i data-lucide="code-2" class="w-6 h-6 text-teal-400"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-4">Analysis & Modeling</h3>
+                    <ul class="space-y-2 text-slate-400">
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-500"></i> Python (Pandas, NumPy)</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-500"></i> R Programming</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-500"></i> Scikit-Learn (Predictive)</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-teal-500"></i> Statistical Testing (A/B)</li>
+                    </ul>
+                </div>
+
+                <!-- Skill Card 3 -->
+                <div class="glass-panel p-8 rounded-xl hover:border-slate-600 transition-colors reveal">
+                    <div class="w-12 h-12 bg-indigo-500/10 rounded-lg flex items-center justify-center mb-6">
+                        <i data-lucide="pie-chart" class="w-6 h-6 text-indigo-400"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-4">BI & Visualization</h3>
+                    <ul class="space-y-2 text-slate-400">
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-indigo-500"></i> Tableau / Power BI</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-indigo-500"></i> Google Looker Studio</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-indigo-500"></i> Interactive Dashboards</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-indigo-500"></i> Excel Modeling</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Projects (Case Studies) -->
+    <section id="projects" class="py-24 bg-slate-950 relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 reveal">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-serif font-bold text-white mb-2">Featured Case Studies</h2>
+                    <p class="text-slate-400">Solving real business problems through data.</p>
+                </div>
+                <a href="#" class="hidden md:flex items-center text-sm font-medium text-blue-500 hover:text-blue-400 transition-colors mt-4 md:mt-0">
+                    View Full GitHub <i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i>
+                </a>
+            </div>
+
+            <div class="space-y-20">
+                <!-- Project 1 -->
+                <article class="group reveal">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                        <!-- Content -->
+                        <div class="order-2 lg:order-1">
+                            <div class="flex items-center space-x-3 mb-4">
+                                <span class="px-3 py-1 text-xs font-semibold bg-blue-900/30 text-blue-400 rounded-full border border-blue-800">E-Commerce</span>
+                                <span class="px-3 py-1 text-xs font-semibold bg-slate-800 text-slate-300 rounded-full border border-slate-700">Python</span>
+                                <span class="px-3 py-1 text-xs font-semibold bg-slate-800 text-slate-300 rounded-full border border-slate-700">Tableau</span>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-blue-400 transition-colors">Customer Churn Prediction & Retention Strategy</h3>
+                            
+                            <div class="space-y-6">
+                                <div>
+                                    <h4 class="text-sm uppercase tracking-wider text-slate-500 font-semibold mb-1">The Problem</h4>
+                                    <p class="text-slate-300 leading-relaxed">A SaaS client faced a 15% monthly churn rate but couldn't identify at-risk segments efficiently.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm uppercase tracking-wider text-slate-500 font-semibold mb-1">The Approach</h4>
+                                    <p class="text-slate-300 leading-relaxed">Engineered a Random Forest classifier using 2 years of user behavior data. Identified key churn indicators (login frequency, ticket volume).</p>
+                                </div>
+                                <div class="bg-slate-900/50 p-4 rounded-lg border-l-4 border-teal-500">
+                                    <h4 class="text-sm uppercase tracking-wider text-teal-400 font-semibold mb-1">Business Impact</h4>
+                                    <p class="text-white font-medium">Reduced churn by 4% in Q1, saving approx. $120k in ARR.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-8 flex items-center space-x-4">
+                                <a href="#" class="text-white border-b border-white pb-1 hover:text-blue-400 hover:border-blue-400 transition-colors">Read Case Study</a>
+                                <a href="#" class="text-slate-400 hover:text-white transition-colors"><i data-lucide="github" class="w-5 h-5"></i></a>
+                            </div>
+                        </div>
+
+                        <!-- Visual -->
+                        <div class="order-1 lg:order-2">
+                            <div class="glass-panel p-2 rounded-xl border border-slate-700 shadow-2xl group-hover:shadow-blue-900/20 transition-all duration-500 transform group-hover:-translate-y-2">
+                                <div class="relative bg-slate-950 rounded-lg overflow-hidden aspect-video flex flex-col p-6">
+                                    <!-- Mock Dashboard UI -->
+                                    <div class="flex justify-between items-center mb-6">
+                                        <div class="text-sm font-semibold text-slate-300">Retention Dashboard</div>
+                                        <div class="text-xs text-slate-500">Last updated: Today</div>
+                                    </div>
+                                    <div class="flex space-x-4 mb-6">
+                                        <div class="flex-1 bg-slate-800 p-3 rounded">
+                                            <div class="text-xs text-slate-500">Churn Rate</div>
+                                            <div class="text-xl font-bold text-red-400">11.2% <span class="text-xs text-teal-500">↓ 3.8%</span></div>
+                                        </div>
+                                        <div class="flex-1 bg-slate-800 p-3 rounded">
+                                            <div class="text-xs text-slate-500">At-Risk Users</div>
+                                            <div class="text-xl font-bold text-amber-400">423</div>
+                                        </div>
+                                    </div>
+                                    <!-- Charts -->
+                                    <div class="flex items-end justify-between h-32 space-x-2 mt-auto">
+                                        <div class="w-full bg-slate-800 rounded h-24 relative overflow-hidden">
+                                            <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-blue-600/50 to-transparent h-full"></div>
+                                            <svg class="absolute bottom-0 left-0 w-full h-full" preserveAspectRatio="none">
+                                                <polyline fill="none" stroke="#3b82f6" stroke-width="2" points="0,80 50,70 100,75 150,50 200,60 250,40 300,55 350,30 400,45 450,20 500,10" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 2 -->
+                <article class="group reveal">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                        <!-- Visual -->
+                        <div class="order-1">
+                            <div class="glass-panel p-2 rounded-xl border border-slate-700 shadow-2xl group-hover:shadow-teal-900/20 transition-all duration-500 transform group-hover:-translate-y-2">
+                                <div class="relative bg-slate-950 rounded-lg overflow-hidden aspect-video flex flex-col p-6 justify-center items-center">
+                                    <div class="w-full max-w-xs space-y-4">
+                                        <div class="flex justify-between text-sm text-slate-400">
+                                            <span>Supply Efficiency</span>
+                                            <span>94%</span>
+                                        </div>
+                                        <div class="w-full bg-slate-800 rounded-full h-2">
+                                            <div class="bg-teal-500 h-2 rounded-full w-[94%]"></div>
+                                        </div>
+                                        
+                                        <div class="flex justify-between text-sm text-slate-400 mt-4">
+                                            <span>Delivery Time</span>
+                                            <span>-15%</span>
+                                        </div>
+                                        <div class="w-full bg-slate-800 rounded-full h-2">
+                                            <div class="bg-blue-500 h-2 rounded-full w-[85%]"></div>
+                                        </div>
+
+                                        <div class="flex justify-between text-sm text-slate-400 mt-4">
+                                            <span>Inventory Cost</span>
+                                            <span>-8%</span>
+                                        </div>
+                                        <div class="w-full bg-slate-800 rounded-full h-2">
+                                            <div class="bg-indigo-500 h-2 rounded-full w-[92%]"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="order-2">
+                            <div class="flex items-center space-x-3 mb-4">
+                                <span class="px-3 py-1 text-xs font-semibold bg-teal-900/30 text-teal-400 rounded-full border border-teal-800">Logistics</span>
+                                <span class="px-3 py-1 text-xs font-semibold bg-slate-800 text-slate-300 rounded-full border border-slate-700">SQL</span>
+                                <span class="px-3 py-1 text-xs font-semibold bg-slate-800 text-slate-300 rounded-full border border-slate-700">Power BI</span>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-teal-400 transition-colors">Supply Chain Optimization Dashboard</h3>
+                            
+                            <div class="space-y-6">
+                                <div>
+                                    <h4 class="text-sm uppercase tracking-wider text-slate-500 font-semibold mb-1">The Problem</h4>
+                                    <p class="text-slate-300 leading-relaxed">Client struggled with inventory overstocking and delayed shipments due to poor visibility into regional warehouse data.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm uppercase tracking-wider text-slate-500 font-semibold mb-1">The Approach</h4>
+                                    <p class="text-slate-300 leading-relaxed">Unified 3 disparate data sources into a central SQL warehouse. Built a real-time Power BI dashboard tracking stock levels against predictive demand.</p>
+                                </div>
+                                <div class="bg-slate-900/50 p-4 rounded-lg border-l-4 border-blue-500">
+                                    <h4 class="text-sm uppercase tracking-wider text-blue-400 font-semibold mb-1">Business Impact</h4>
+                                    <p class="text-white font-medium">Reduced holding costs by 18% and improved on-time delivery by 15% within 6 months.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-8 flex items-center space-x-4">
+                                <a href="#" class="text-white border-b border-white pb-1 hover:text-teal-400 hover:border-teal-400 transition-colors">Read Case Study</a>
+                                <a href="#" class="text-slate-400 hover:text-white transition-colors"><i data-lucide="github" class="w-5 h-5"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Data Storytelling / Interactive Section -->
+    <section class="py-24 bg-slate-950 relative border-t border-slate-800">
+        <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-serif font-bold text-white mb-4">The Art of Insight</h2>
+            <p class="text-slate-400 mb-12">Click below to see how I transform raw data tables into clear, actionable narratives.</p>
+            
+            <div class="glass-panel p-1 rounded-2xl inline-flex mb-8 bg-slate-900/50">
+                <button id="btn-raw" onclick="toggleView('raw')" class="px-6 py-2 rounded-xl text-sm font-medium bg-slate-800 text-white shadow-lg transition-all">Raw Data</button>
+                <button id="btn-insight" onclick="toggleView('insight')" class="px-6 py-2 rounded-xl text-sm font-medium text-slate-400 hover:text-white transition-all">Visual Insight</button>
+            </div>
+
+            <div class="glass-panel rounded-2xl overflow-hidden min-h-[400px] border border-slate-700 relative">
+                
+                <!-- Raw Data View -->
+                <div id="view-raw" class="p-8 transition-all duration-500 absolute inset-0 flex flex-col items-center justify-center">
+                    <div class="w-full overflow-x-auto">
+                        <table class="w-full text-left text-sm text-slate-400 font-mono">
+                            <thead class="bg-slate-900 text-slate-200">
+                                <tr>
+                                    <th class="p-3">Region</th>
+                                    <th class="p-3">Q1 Sales</th>
+                                    <th class="p-3">Q2 Sales</th>
+                                    <th class="p-3">Diff %</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800">
+                                <tr><td class="p-3">North</td><td class="p-3">12,400</td><td class="p-3">11,200</td><td class="p-3 text-red-400">-9.6%</td></tr>
+                                <tr><td class="p-3">South</td><td class="p-3">8,500</td><td class="p-3">14,200</td><td class="p-3 text-teal-400">+67.0%</td></tr>
+                                <tr><td class="p-3">East</td><td class="p-3">22,100</td><td class="p-3">23,000</td><td class="p-3 text-teal-400">+4.1%</td></tr>
+                                <tr><td class="p-3">West</td><td class="p-3">15,600</td><td class="p-3">15,800</td><td class="p-3 text-teal-400">+1.2%</td></tr>
+                            </tbody>
+                        </table>
+                        <div class="mt-4 text-xs text-slate-500 italic text-left">... 450 more rows ...</div>
+                    </div>
+                </div>
+
+                <!-- Insight View -->
+                <div id="view-insight" class="p-8 transition-all duration-500 absolute inset-0 opacity-0 pointer-events-none flex flex-col items-center justify-center bg-slate-950">
+                    <div class="w-full max-w-lg">
+                        <h3 class="text-xl font-bold text-white mb-2">The South Region is Exploding</h3>
+                        <p class="text-sm text-slate-400 mb-6">While North lags, the South has seen a <span class="text-teal-400 font-bold">67% surge</span> due to the new Q2 marketing campaign.</p>
+                        
+                        <!-- CSS Chart -->
+                        <div class="flex items-end space-x-6 h-48 justify-center pb-4 border-b border-slate-700">
+                            <div class="w-16 flex flex-col items-center group">
+                                <div class="w-full bg-slate-800 h-32 rounded-t transition-all duration-500 relative">
+                                    <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 text-xs text-slate-400 opacity-0 group-hover:opacity-100">-9%</span>
+                                </div>
+                                <span class="text-xs text-slate-500 mt-2">North</span>
+                            </div>
+                            <div class="w-16 flex flex-col items-center group">
+                                <div class="w-full bg-teal-500 h-48 rounded-t shadow-[0_0_20px_rgba(45,212,191,0.4)] transition-all duration-500 relative">
+                                     <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 text-xs text-teal-400 font-bold opacity-0 group-hover:opacity-100">+67%</span>
+                                </div>
+                                <span class="text-xs text-white font-bold mt-2">South</span>
+                            </div>
+                            <div class="w-16 flex flex-col items-center group">
+                                <div class="w-full bg-slate-700 h-36 rounded-t transition-all duration-500 relative">
+                                     <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 text-xs text-slate-400 opacity-0 group-hover:opacity-100">+4%</span>
+                                </div>
+                                <span class="text-xs text-slate-500 mt-2">East</span>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-left p-3 bg-teal-900/20 border border-teal-900/50 rounded flex items-start">
+                            <i data-lucide="lightbulb" class="w-4 h-4 text-teal-400 mr-2 mt-0.5"></i>
+                            <p class="text-xs text-teal-100">Recommendation: Reallocate 20% of North's budget to scale the South campaign immediately.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Timeline -->
+    <section id="experience" class="py-24 bg-slate-950 relative">
+        <div class="max-w-4xl mx-auto px-6 lg:px-8">
+            <h2 class="text-3xl font-serif font-bold text-white mb-12 text-center">Professional Journey</h2>
+            
+            <div class="relative border-l border-slate-800 ml-3 md:ml-0 space-y-12">
+                
+                <!-- Role 1 -->
+                <div class="relative pl-8 md:pl-0 md:grid md:grid-cols-5 md:gap-8 reveal">
+                    <div class="md:col-span-1 md:text-right">
+                        <span class="text-sm font-mono text-blue-500 font-semibold">2021 - Present</span>
+                    </div>
+                    <!-- Dot -->
+                    <div class="absolute -left-1.5 top-1.5 h-3 w-3 rounded-full bg-blue-500 border border-slate-900 shadow-[0_0_10px_rgba(59,130,246,0.5)] md:left-auto md:right-0 md:transform md:translate-x-1.5 md:relative md:top-0 md:w-3 md:h-3 md:mx-auto md:border-4 md:border-slate-950"></div>
+                    
+                    <div class="md:col-span-4">
+                        <h3 class="text-xl font-bold text-white">Senior Data Analyst</h3>
+                        <p class="text-slate-400 mb-4">FinTech Solutions Inc.</p>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                            Leading a team of 3 analysts to oversee user behavior analytics and fraud detection models.
+                        </p>
+                        <ul class="space-y-2 text-sm text-slate-400">
+                            <li class="flex items-start"><span class="text-teal-500 mr-2">•</span> Designed a dashboard reducing reporting time by 70%.</li>
+                            <li class="flex items-start"><span class="text-teal-500 mr-2">•</span> Spearheaded a data quality initiative improving accuracy by 25%.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Role 2 -->
+                <div class="relative pl-8 md:pl-0 md:grid md:grid-cols-5 md:gap-8 reveal">
+                    <div class="md:col-span-1 md:text-right">
+                        <span class="text-sm font-mono text-slate-500">2019 - 2021</span>
+                    </div>
+                    <!-- Dot -->
+                    <div class="absolute -left-1.5 top-1.5 h-3 w-3 rounded-full bg-slate-700 border border-slate-900 md:left-auto md:right-0 md:transform md:translate-x-1.5 md:relative md:top-0 md:w-3 md:h-3 md:mx-auto md:border-4 md:border-slate-950"></div>
+                    
+                    <div class="md:col-span-4">
+                        <h3 class="text-xl font-bold text-white">Data Analyst</h3>
+                        <p class="text-slate-400 mb-4">Global Retail Partners</p>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                            Focused on supply chain analytics and inventory forecasting for 50+ retail locations.
+                        </p>
+                        <ul class="space-y-2 text-sm text-slate-400">
+                            <li class="flex items-start"><span class="text-slate-500 mr-2">•</span> Automating weekly sales reports using Python and SQL.</li>
+                            <li class="flex items-start"><span class="text-slate-500 mr-2">•</span> Creating Tableau visualizations for C-suite monthly reviews.</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Grid -->
+    <section class="py-16 bg-slate-950 border-t border-slate-800">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <h3 class="text-sm uppercase tracking-widest text-slate-500 mb-10">Tools & Technologies</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 items-center justify-center opacity-70">
+                <!-- Simple text/icon representations -->
+                <div class="flex flex-col items-center space-y-2 hover:text-white hover:opacity-100 transition-all">
+                    <i data-lucide="database" class="w-8 h-8"></i>
+                    <span class="text-xs font-semibold">SQL</span>
+                </div>
+                <div class="flex flex-col items-center space-y-2 hover:text-white hover:opacity-100 transition-all">
+                    <i data-lucide="code" class="w-8 h-8"></i>
+                    <span class="text-xs font-semibold">Python</span>
+                </div>
+                <div class="flex flex-col items-center space-y-2 hover:text-white hover:opacity-100 transition-all">
+                    <i data-lucide="bar-chart-2" class="w-8 h-8"></i>
+                    <span class="text-xs font-semibold">Tableau</span>
+                </div>
+                <div class="flex flex-col items-center space-y-2 hover:text-white hover:opacity-100 transition-all">
+                    <i data-lucide="layout-grid" class="w-8 h-8"></i>
+                    <span class="text-xs font-semibold">Power BI</span>
+                </div>
+                <div class="flex flex-col items-center space-y-2 hover:text-white hover:opacity-100 transition-all">
+                    <i data-lucide="table" class="w-8 h-8"></i>
+                    <span class="text-xs font-semibold">Excel</span>
+                </div>
+                <div class="flex flex-col items-center space-y-2 hover:text-white hover:opacity-100 transition-all">
+                    <i data-lucide="git-branch" class="w-8 h-8"></i>
+                    <span class="text-xs font-semibold">Git</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 bg-slate-950 relative">
+        <div class="max-w-3xl mx-auto px-6 lg:px-8">
+            <div class="glass-panel p-8 md:p-12 rounded-2xl border border-slate-800 text-center reveal">
+                <h2 class="text-3xl font-serif font-bold text-white mb-4">Ready to unlock your data's potential?</h2>
+                <p class="text-slate-400 mb-8">Currently available for freelance projects and consulting opportunities.</p>
+                
+                <form class="space-y-6 text-left" onsubmit="event.preventDefault(); alert('Message sent! (Demo only)');">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-500 mb-2">Name</label>
+                            <input type="text" class="w-full bg-slate-900 border-b border-slate-700 text-white px-0 py-2 focus:outline-none focus:border-blue-500 transition-colors placeholder-slate-700" placeholder="John Doe">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-500 mb-2">Email</label>
+                            <input type="email" class="w-full bg-slate-900 border-b border-slate-700 text-white px-0 py-2 focus:outline-none focus:border-blue-500 transition-colors placeholder-slate-700" placeholder="john@company.com">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-500 mb-2">Message</label>
+                        <textarea class="w-full bg-slate-900 border-b border-slate-700 text-white px-0 py-2 focus:outline-none focus:border-blue-500 transition-colors placeholder-slate-700 h-24 resize-none" placeholder="Tell me about your data challenge..."></textarea>
+                    </div>
+                    <div class="text-center pt-4">
+                        <button type="submit" class="px-10 py-3 bg-white text-slate-950 rounded-full font-medium hover:bg-blue-500 hover:text-white transition-all shadow-lg">
+                            Send Message
+                        </button>
+                    </div>
+                </form>
+
+                <div class="mt-12 pt-8 border-t border-slate-800 flex justify-center space-x-8">
+                    <a href="https://www.linkedin.com" class="text-slate-500 hover:text-white transition-colors"><i data-lucide="linkedin" class="w-6 h-6"></i></a>
+                    <a href="https://github.com" class="text-slate-500 hover:text-white transition-colors"><i data-lucide="github" class="w-6 h-6"></i></a>
+                    <a href="https://twitter.com" class="text-slate-500 hover:text-white transition-colors"><i data-lucide="twitter" class="w-6 h-6"></i></a>
+                    <a href="mailto:alex@ocabyte.com" class="text-slate-500 hover:text-white transition-colors"><i data-lucide="mail" class="w-6 h-6"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 py-8 text-center border-t border-slate-900">
+        <p class="text-slate-600 text-sm">© 2024 Alex Mercer. Built By <a href="https://www.facebook.com/profile.php?id=100063808086007"><u>OcaByte</u>.</a></p>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Navbar Transition
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 20) {
+                nav.classList.add('shadow-lg');
+            } else {
+                nav.classList.remove('shadow-lg');
+            }
+        });
+
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Scroll Reveal Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Data Storytelling Toggle Logic
+        function toggleView(view) {
+            const rawView = document.getElementById('view-raw');
+            const insightView = document.getElementById('view-insight');
+            const btnRaw = document.getElementById('btn-raw');
+            const btnInsight = document.getElementById('btn-insight');
+
+            if (view === 'raw') {
+                rawView.style.opacity = '1';
+                rawView.style.pointerEvents = 'auto';
+                insightView.style.opacity = '0';
+                insightView.style.pointerEvents = 'none';
+                
+                btnRaw.classList.replace('text-slate-400', 'text-white');
+                btnRaw.classList.replace('bg-slate-800', 'bg-slate-800'); // Keeping bg consistent
+                btnRaw.classList.add('shadow-lg');
+                
+                btnInsight.classList.replace('text-white', 'text-slate-400');
+                btnInsight.classList.remove('bg-slate-800');
+            } else {
+                rawView.style.opacity = '0';
+                rawView.style.pointerEvents = 'none';
+                insightView.style.opacity = '1';
+                insightView.style.pointerEvents = 'auto';
+
+                btnInsight.classList.replace('text-slate-400', 'text-white');
+                btnInsight.classList.add('bg-slate-800');
+                
+                btnRaw.classList.replace('text-white', 'text-slate-400');
+                btnRaw.classList.remove('bg-slate-800', 'shadow-lg');
+            }
+        }
+    </script>
+</body>
+</html>
